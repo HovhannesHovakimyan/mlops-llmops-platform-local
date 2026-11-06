@@ -13,7 +13,8 @@ servers: 1
 agents: 2
 
 # Pin the k3s version so a rebuilt cluster is identical to the old one.
-image: rancher/k3s:v1.35.5-k3s1
+# Keep within kubectl's ±1 minor version skew (kubectl is v1.37).
+image: rancher/k3s:v1.36.6-k3s1
 
 # Fixed API server port, so the kubeconfig doesn't change between rebuilds.
 kubeAPI:

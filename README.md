@@ -52,7 +52,7 @@ monitoring/   Drift jobs, alert rules, dashboards
 |---------|----------------|
 | podman  | 6.1.4          |
 | k3d     | v5.9.0         |
-| k3s     | v1.35.5-k3s1 (pinned in `infra/k3d/cluster.yaml`) |
+| k3s     | v1.36.6-k3s1 (pinned in `infra/k3d/cluster.yaml`) |
 | kubectl | v1.37.2        |
 | helm    | v4.3.1         |
 | argocd  | v3.6.0         |
@@ -126,7 +126,9 @@ _More steps added as each milestone lands._
 - **`DOCKER_HOST` ≠ `DOCKER_SOCK` on Podman.** `DOCKER_HOST` is the macOS-side socket the
   k3d CLI talks to; `DOCKER_SOCK` is bind-mounted into k3d's tools container, so it must
   be the path inside the VM (`/run/podman/podman.sock` for a rootful machine).
-- **Fixed API port (6550) and pinned k3s image.** Rebuilt clusters are identical and the
+- **Fixed API port (6550) and pinned k3s image.** k3s v1.36 keeps the cluster within
+  kubectl's ±1 minor skew (kubectl v1.37) and is closer to what EKS will offer for the
+  AWS version. Rebuilt clusters are identical and the
   kubeconfig stays stable.
 - **Monorepo with a `gitops/` folder** instead of a separate GitOps repo; CI workflows use
   `paths:` filters to avoid commit loops.
