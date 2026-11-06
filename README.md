@@ -57,8 +57,8 @@ monitoring/   Drift jobs, alert rules, dashboards
 | helm    | v4.3.1         |
 | argocd  | v3.6.0         |
 | uv      | 0.13.7         |
-| dvc     | _TBD_          |
-| gh      | _TBD_          |
+| dvc     | 3.67.1         |
+| gh      | 2.103.3        |
 
 ### Shell environment
 
