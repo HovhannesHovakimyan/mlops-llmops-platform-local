@@ -1,0 +1,54 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/k3d-io/k3d/v5.9.0/pkg/config/v1alpha5/schema.json
+# k3d cluster definition for the local platform.
+# Create:  k3d cluster create --config infra/k3d/cluster.yaml
+# Delete:  k3d cluster delete mlops-llmops-platform-local
+# Docs:    https://k3d.io/stable/usage/configfile/
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: mlops-llmops-platform-local
+
+# 1 control-plane node + 2 workers (lets you practice node affinity/taints later).
+servers: 1
+agents: 2
+
+# Pin the k3s version so a rebuilt cluster is identical to the old one.
+image: rancher/k3s:v1.35.5-k3s1
+
+# Fixed API server port, so the kubeconfig doesn't change between rebuilds.
+kubeAPI:
+  host: "127.0.0.1"
+  hostPort: "6550"
+
+# Host → cluster ingress (Traefik, bundled with k3s).
+# http://<name>.localhost:8080 reaches Ingress resources inside the cluster.
+ports:
+  - port: 8080:80
+    nodeFilters:
+      - loadbalancer
+  - port: 8443:443
+    nodeFilters:
+      - loadbalancer
+
+# Local image registry. Created separately (not via registries.create) because
+# k3d attaches created registries to Docker's "bridge" network, which Podman
+# doesn't have. Being independent also means pushed images survive cluster rebuilds.
+# One-time setup:
+#   k3d registry create registry.localhost --port 0.0.0.0:5001 --default-network podman
+#   From the Mac (podman push):      localhost:5001/<image>
+#   From inside the cluster (pods):  k3d-registry.localhost:5001/<image>
+registries:
+  use:
+    - k3d-registry.localhost:5001
+
+# Uncomment if cluster creation fails with DNS/network errors under Podman,
+# after running: podman network create k3d
+# network: k3d
+
+options:
+  k3d:
+    wait: true
+    timeout: "180s"
+  kubeconfig:
+    updateDefaultKubeconfig: true
+    switchCurrentContext: true
