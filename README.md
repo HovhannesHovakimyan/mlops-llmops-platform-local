@@ -96,6 +96,11 @@ helm upgrade --install argocd argo/argo-cd -n argocd --create-namespace \
 
 # 6. Log in (UI: http://argocd.localhost:8080, user admin / password admin — local only)
 argocd login argocd.localhost:8080 --plaintext --grpc-web --username admin
+
+# 7. Bootstrap GitOps (repo connection + root app; everything else comes from Git)
+kubectl apply -f gitops/bootstrap/repo-secret.yaml
+kubectl apply -f gitops/bootstrap/root.yaml
+argocd app list                                     # root: Synced / Healthy
 ```
 
 > **Note:** The ArgoCD admin password is set to `admin` (bcrypt hash in
@@ -121,10 +126,10 @@ _More steps added as each milestone lands._
 ## Roadmap
 
 - [x] Step 0 – Workstation, k3d cluster, local registry
-- [ ] Step 1 – GitOps bootstrap via ArgoCD
+- [x] Step 1 – GitOps bootstrap via ArgoCD
   - [x] 1a – ArgoCD installed via Helm, ingress, admin login
-  - [ ] 1b – Private repo access (deploy key) + app-of-apps root
-  - [ ] 1c – Smoke-test app (sync, self-heal, prune)
+  - [x] 1b – Declarative repo connection + app-of-apps root
+  - [x] 1c – Smoke-test app (sync, self-heal, prune)
 - [ ] Step 2 – Platform services via ArgoCD (MinIO, Postgres, MLflow)
 - [ ] M1 – Data versioning + validation gate
 - [ ] M2 – Training + MLflow registry (`@candidate`)
