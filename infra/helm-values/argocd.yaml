@@ -6,7 +6,8 @@ configs:
   cm:
     url: http://argocd.localhost:8080
   secret:
-    argocdServerAdminPassword: $2a$10$e9A/0SQEoDvy.CbXfWW/fuH0ypwSiKJAsqjI62/uxf.eQYhlBcXOG
+    argocdServerAdminPassword: '$2a$10$e9A/0SQEoDvy.CbXfWW/fuH0ypwSiKJAsqjI62/uxf.eQYhlBcXOG'
+    argocdServerAdminPasswordMtime: "2026-11-07T00:00:00Z"
 server:
   ingress:
     enabled: true
