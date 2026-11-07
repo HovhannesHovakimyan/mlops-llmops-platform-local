@@ -1,0 +1,17 @@
+global:
+  domain: argocd.localhost
+configs:
+  params:
+    server.insecure: true
+  cm:
+    url: http://argocd.localhost:8080
+  secret:
+    argocdServerAdminPassword: $2a$10$e9A/0SQEoDvy.CbXfWW/fuH0ypwSiKJAsqjI62/uxf.eQYhlBcXOG
+server:
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+dex:
+  enabled: false
+notifications:
+  enabled: false
